@@ -1,6 +1,8 @@
-﻿using Mbsample.Application.DTOs;
+﻿using Mbsample.Application.Contracts;
+using Mbsample.Application.DTOs;
 using Mbsample.Domain.Entities;
 using Mbsample.Infrastructure;
+using Mbsample.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +12,14 @@ namespace Mbsample.API.Controllers.v1
     public class CustomersController : BaseApiController
     {
         private readonly ILogger<CustomersController> _logger;
+        private readonly ICustomerRepository _customerRepository;
         private readonly CustomerDbContext _context;
 
-        public CustomersController(ILogger<CustomersController> logger, CustomerDbContext context)
+        //TODO:PTRU20250605 in the future replace context and leave only repository (or if migrating to CQRS mov erepository to handler)
+        public CustomersController(ILogger<CustomersController> logger, ICustomerRepository customerRepository, CustomerDbContext context)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _context = context;
         }
 
@@ -73,14 +78,13 @@ namespace Mbsample.API.Controllers.v1
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(CreateCustomerDto customerDto)
+        public async Task<ActionResult<Customer>> PostCustomer(CreateCustomerDto createCustomerDto)
         {
-            _logger.LogDebug("Creating a new customer with data: {@CustomerDto}", customerDto);
+            _logger.LogDebug("Creating a new customer with data: {@CustomerDto}", createCustomerDto);
 
-            var customer = customerDto.ToEntity();
+            var customer = createCustomerDto.ToEntity();
 
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
+            await _customerRepository.CreateCustomerAsync(customer);
 
             return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }

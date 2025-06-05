@@ -4,6 +4,10 @@ using Mbsample.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Mbsample.Application.DTOs;
+using Mbsample.Application.Contracts;
+using Mbsample.Infrastructure.Repositories;
+
+//TODO:PTRU20250604 clean up this file with extensions
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +21,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomerDto>();
 builder.Services.AddFluentValidationAutoValidation();
 
+
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 //Database
 builder.Services.AddDbContext<CustomerDbContext>(options =>
