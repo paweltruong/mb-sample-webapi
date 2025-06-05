@@ -25,4 +25,4 @@ Following WebAPI 2.0 best practices
 * authorization f.e with api key
 * add paginations and other optimizations
 * polish up documentation
-* convert CQRS if needed
+* extract business logic(right now it is very simple) to servicecontracts or convert CQRS if needed
