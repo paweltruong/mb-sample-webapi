@@ -16,9 +16,12 @@ Following WebAPI 2.0 best practices
 * logging support
 * integration tests (inmemorydb)
 
+# Work in progress
+* refactoring controller for repository, dtos and validations
+* abstraction for db, repository (for tests)
+
 # Todo
 
-* abstraction for db, repository (for tests)
 * unit tests
 * more detailed error handling?
 * cors
