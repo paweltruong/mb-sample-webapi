@@ -1,4 +1,6 @@
+using Mbsample.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+
+//Database
+builder.Services.AddDbContext<CustomerDbContext>(options =>
+{
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("Default") ?? throw new ArgumentException("Default connection string in config not found"));
+    var inMemoryDbName = builder.Configuration.GetConnectionString("InMemoryDb") ?? throw new ArgumentException("InMemoryDb connection string in config not found");
+    options.UseInMemoryDatabase(inMemoryDbName);//For testing only
+});
+
+//Versioning
 builder.Services.AddApiVersioning(options =>
 {
     options.ReportApiVersions = true;
@@ -25,6 +37,7 @@ builder.Services.AddVersionedApiExplorer(options =>
      options.SubstituteApiVersionInUrl = true;
  });
 
+//Swagger
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
