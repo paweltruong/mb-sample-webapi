@@ -9,10 +9,12 @@ namespace Mbsample.API.Controllers.v1
     [ApiVersion("1.0")]
     public class CustomersController : BaseApiController
     {
+        private readonly ILogger<CustomersController> _logger;
         private readonly CustomerDbContext _context;
 
-        public CustomersController(CustomerDbContext context)
+        public CustomersController(ILogger<CustomersController> logger, CustomerDbContext context)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context;
         }
 
@@ -73,6 +75,8 @@ namespace Mbsample.API.Controllers.v1
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(CreateCustomerDto customerDto)
         {
+            _logger.LogDebug("Creating a new customer with data: {@CustomerDto}", customerDto);
+
             var customer = customerDto.ToEntity();
 
             _context.Customers.Add(customer);
