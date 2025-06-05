@@ -13,14 +13,11 @@ Following WebAPI 2.0 best practices
 * EF support
 * dtos to prevent overposting
 * validation support
-
+* logging support
+* integration tests (inmemorydb)
 
 # Todo
 
-
-
-* logging support
-* integration tests (inmemorydb)
 * abstraction for db, repository (for tests)
 * unit tests
 * more detailed error handling?
