@@ -1,6 +1,9 @@
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Mbsample.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Mbsample.Application.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+//Validations for DTOs
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomerDto>();
+builder.Services.AddFluentValidationAutoValidation();
 
 
 //Database

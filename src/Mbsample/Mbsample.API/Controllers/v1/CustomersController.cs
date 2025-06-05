@@ -1,4 +1,5 @@
-﻿using Mbsample.Domain.Entities;
+﻿using Mbsample.Application.DTOs;
+using Mbsample.Domain.Entities;
 using Mbsample.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -70,8 +71,10 @@ namespace Mbsample.API.Controllers.v1
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        public async Task<ActionResult<Customer>> PostCustomer(CreateCustomerDto customerDto)
         {
+            var customer = customerDto.ToEntity();
+
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
